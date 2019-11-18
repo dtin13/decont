@@ -8,5 +8,5 @@ sid=$3
 
 echo
 mkdir -p $2
-cat $1/$3* > $2/$3.gz 
+cat $1/$3* > $2/$3.fastq.gz 
 echo
