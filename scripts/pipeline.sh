@@ -20,6 +20,7 @@ do
 done
 echo
 
+# TODO: run cutadapt for all merged files
 mkdir -p out/trimmed
 mkdir -p log/cutadapt
 for file in $(ls out/merged/*|sed 's:out/merged/::'|sed 's:.fastq.gz::')
@@ -32,11 +33,13 @@ echo
 #TODO: run STAR for all trimmed files
 for fname in out/trimmed/*.fastq.gz
 do
-    # you will need to obtain the sample ID from the filename
-    sid=#TODO
-    # mkdir -p out/star/$sid
-    # STAR --runThreadN 4 --genomeDir res/contaminants_idx --outReadsUnmapped Fastx --readFilesIn <input_file> --readFilesCommand zcat --outFileNamePrefix <output_directory>
-done 
+	# you will need to obtain the sample ID from the filename
+	sid=$(echo $fname|sed 's:out/trimmed/::'|cut -d "." -f1)
+	mkdir -p out/star/$sid
+	STAR --runThreadN 4 --genomeDir res/contaminants_idx --outReadsUnmapped Fastx --readFilesIn 		$fname --readFilesCommand zcat --outFileNamePrefix out/star/$sid/
+done
+echo
+
 
 # TODO: create a log file containing information from cutadapt and star logs
 # (this should be a single log file, and information should be *appended* to it on each run)
