@@ -45,3 +45,22 @@ echo
 # (this should be a single log file, and information should be *appended* to it on each run)
 # - cutadapt: Reads with adapters and total basepairs
 # - star: Percentages of uniquely mapped reads, reads mapped to multiple loci, and to too many loci
+
+echo -e "General log file containing information from cutadapt and star logs \n" > log/pipeline.log
+
+for sid in $(ls out/trimmed |sed 's:out/trimmed/::'|cut -d "." -f1)
+do
+echo "$sid log information from cutadapt" >> log/pipeline.log
+grep "Reads with adapters" log/cutadapt/${sid}.log >> log/pipeline.log
+grep "Total basepairs processed:" log/cutadapt/${sid}.log >> log/pipeline.log
+echo -e "\n" >> log/pipeline.log
+echo -e "$sid log information from cutadapt stored \n"
+echo 
+echo "$sid log information from STAR" >> log/pipeline.log
+grep "Uniquely mapped reads" out/star/$sid/Log.final.out >> log/pipeline.log
+grep "% of reads mapped to multiple loci" out/star/$sid/Log.final.out >> log/pipeline.log
+grep "% of reads mapped to too many loci" out/star/$sid/Log.final.out >> log/pipeline.log
+echo -e "\n" >> log/pipeline.log
+echo -e "$sid log information from star stored \n"
+done
+
