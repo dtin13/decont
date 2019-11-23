@@ -3,9 +3,9 @@
 
 link=$1
 dir=$2
+arg=$3
 
-
-if ["${url}"="$1"]
+if ["${url}"=="$1"]
 then
 	echo "Descarga de los archivos de secuencia..."
 	wget -P $2 $1
@@ -14,8 +14,8 @@ then
 
 else
 	echo "Descarga de la base de datos de contaminantes"
-	wget -P $2 $1 
-	echo
+	wget -P $2 $1
+	gunzip -k $2/contaminants.fasta.gz
 fi
 
-gunzip -k res/contaminants.fasta.gz
+
